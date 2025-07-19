@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     DATABASE_URL_SUPABASE: str
 
+    PORT: int
+
     # Telegram API
     TELEGRAM_API_ID: int
     TELEGRAM_API_HASH: str

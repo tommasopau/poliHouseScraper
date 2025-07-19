@@ -41,7 +41,7 @@ def create_app() -> FastAPI:
 
     app.add_middleware(
         TrustedHostMiddleware,
-        allowed_hosts=["localhost", "127.0.0.1", "192.168.1.3"]
+        allowed_hosts=["*"]
     )
     # Add CORS middleware
     app.add_middleware(
