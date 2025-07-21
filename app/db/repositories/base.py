@@ -36,6 +36,7 @@ class SQLAlchemyRepository(Generic[MODEL]):
 
     async def delete(self, id: UUID) -> None:
         obj = await self.get_by_id(id)
-        if obj:
-            await self.db.delete(obj)
-            await self.db.commit()
+        if not obj:
+            raise ValueError(f"{self.model.__name__} with id {id} not found")
+        await self.db.delete(obj)
+        await self.db.commit()

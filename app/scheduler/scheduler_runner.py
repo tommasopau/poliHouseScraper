@@ -11,3 +11,5 @@ if __name__ == "__main__":
         asyncio.get_event_loop().run_forever()
     except KeyboardInterrupt:
         print("Scheduler stopped.")
+    except Exception as e:
+        raise Exception(f"Failed to fetch messages: {e}") from e

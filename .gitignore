@@ -1,5 +1,5 @@
 # Python
-__pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 *.pyd
@@ -29,3 +29,5 @@ Thumbs.db
 # Database files (if any local SQLite, etc.)
 *.db
 *.db-journal
+Procfile
+house_scraper_poli.session

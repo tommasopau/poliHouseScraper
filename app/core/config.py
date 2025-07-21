@@ -27,8 +27,8 @@ class Settings(BaseSettings):
     MISTRAL_API_KEY: str
 
     # Scheduler
-    SCRAPE_INTERVAL_MINUTES: int = 30
-    SCRAPE_SINCE_DELTA: timedelta = timedelta(days=1.5)
+    SCRAPE_INTERVAL_MINUTES: int = 60
+    SCRAPE_SINCE_DELTA: timedelta = timedelta(minutes=60)
 
     CHANNEL_NAME: str = "@polihouse"
 
