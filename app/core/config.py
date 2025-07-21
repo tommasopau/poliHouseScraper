@@ -22,6 +22,7 @@ class Settings(BaseSettings):
     TELEGRAM_API_HASH: str
     TELEGRAM_PHONE: str
     TELEGRAM_SESSION_NAME: str = "house_scraper"
+    TELEGRAM_SESSION_STRING: str
 
     # LLM Configuration
     MISTRAL_API_KEY: str

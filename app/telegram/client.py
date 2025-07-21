@@ -7,6 +7,7 @@ from zoneinfo import ZoneInfo
 
 from telethon import TelegramClient
 from telethon.tl.types import Message
+from telethon.sessions import StringSession
 from telethon.errors import ChannelPrivateError, UsernameNotOccupiedError, FloodWaitError
 from app.core.config import settings
 from app.db.models import TelegramMessageData
@@ -20,7 +21,7 @@ class TelegramClientWrapper:
     def __init__(self):
         """Initialize Telegram client."""
         self.client = TelegramClient(
-            settings.TELEGRAM_SESSION_NAME,
+            StringSession(settings.TELEGRAM_SESSION_STRING),
             settings.TELEGRAM_API_ID,
             settings.TELEGRAM_API_HASH
         )
