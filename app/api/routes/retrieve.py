@@ -42,6 +42,8 @@ async def search_rentals(
             location=rental.location,
             property_type=rental.property_type,
             tenant_preference=rental.tenant_preference,
+            availability_start=rental.availability_start,
+            availability_end=rental.availability_end,
             num_bedrooms=rental.num_bedrooms,
             num_bathrooms=rental.num_bathrooms,
             flatmates_count=rental.flatmates_count,

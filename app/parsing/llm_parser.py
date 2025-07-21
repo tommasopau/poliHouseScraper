@@ -43,11 +43,11 @@ Messaggio: "{message.text}"
 Estrai questi campi (usa null se non trovato). Se ci sono delle alternative, scegli la più probabile:
 {{
     "price": prezzo_mensile_in_euro_come_numero,
-    "location": "zona o via (se non c'è la via la zona è o Leonardo|Città Studi|Bovisa)",
+    "location": "via se esplicitamente presente, altrimenti zona (Leonardo|Città Studi|Bovisa) se menzionata",
     "property_type": "camera_singola|camera_doppia|appartamento|monolocale",
     "telephone": "numero_telefono_se_trovato",
     "email": "email_se_trovata",
-    "tenant_preference": "[maschio|femmina|indifferente]",
+    "tenant_preference": "scegli solo uno tra (ragazzo' |'ragazza' |'indifferente') ,mai più di uno, mai combinazioni, mai separatori come virgole o slash",
     "available_start": "YY-MM-DD_se_trovato",
     "available_end": "YY-MM-DD_se_trovato",
     "num_bedrooms": numero_camere_da_letto,
@@ -55,6 +55,8 @@ Estrai questi campi (usa null se non trovato). Se ci sono delle alternative, sce
     "flatmates_count": numero_coinquilini_attuali,
     "summary": "breve sunto delle caratteristiche aggiuntive della casa (es: arredamento, servizi, trasporti, spese incluse, condizioni speciali, etc.)"
 }}
+
+Per il campo location, estrai la via se è esplicitamente presente nel testo. Se non c'è una via, usa la zona (Leonardo, Città Studi, Bovisa) se viene menzionata. Se non trovi né via né zona, imposta a null.
 
 Per il campo summary, includi solo le informazioni extra non coperte dagli altri campi, come:
 - Stato dell'arredamento (arredato/non arredato)

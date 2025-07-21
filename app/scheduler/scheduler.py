@@ -34,7 +34,7 @@ async def scrape_job():
             since = datetime.now(timezone.utc) - settings.SCRAPE_SINCE_DELTA
             logger.info(f"Scraping since: {since.isoformat()}")
             results = await scraping_service.scrape_and_process_messages(
-                max_messages=20,
+                max_messages=100,
                 since=since,
             )
             logger.info(f"✅ Scrape job completed: {results}")

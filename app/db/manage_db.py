@@ -7,6 +7,7 @@ from app.db.models import Rental
 from sqlmodel import SQLModel
 from app.core.config import settings
 from sqlalchemy.exc import SQLAlchemyError
+import uuid
 
 
 def get_async_engine() -> AsyncEngine:
@@ -16,6 +17,11 @@ def get_async_engine() -> AsyncEngine:
             settings.DATABASE_URL_SUPABASE,
             echo=settings.LOG_LEVEL == "DEBUG",
             future=True,
+            connect_args={
+                "prepared_statement_name_func": lambda: f"__asyncpg_{uuid.uuid4()}__",
+                "statement_cache_size": 0,
+                "prepared_statement_cache_size": 0,
+            }
         )
     except SQLAlchemyError as e:
         raise RuntimeError(f"Failed to create async engine: {e}")

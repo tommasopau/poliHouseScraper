@@ -19,8 +19,8 @@ class PropertyType(str, Enum):
 
 
 class TenantPreference(str, Enum):
-    maschio = "maschio"
-    femmina = "femmina"
+    ragazzo = "ragazzo"
+    ragazza = "ragazza"
     indifferente = "indifferente"
 
 
