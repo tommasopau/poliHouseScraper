@@ -27,7 +27,6 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DATABASE_URL_SUPABASE: ${{ secrets.DATABASE_URL_SUPABASE }}
-          PORT: ${{ secrets.PORT }}
           TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
           TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           TELEGRAM_PHONE: ${{ secrets.TELEGRAM_PHONE }}
