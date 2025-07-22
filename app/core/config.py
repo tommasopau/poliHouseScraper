@@ -1,7 +1,7 @@
 """
 Pydantic settings for environment configuration.
 """
-from typing import List, Optional
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from datetime import timedelta
 
@@ -36,10 +36,11 @@ class Settings(BaseSettings):
     # Logging
     LOG_LEVEL: str = "INFO"
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
-        extra = "ignore"
+    model_config = ConfigDict(
+        env_file=".env",
+        case_sensitive=True,
+        extra="ignore",
+    )
 
 
 settings = Settings()

@@ -66,6 +66,7 @@ class RentalRepository(SQLAlchemyRepository[Rental]):
             stmt = stmt.where(*filters)
         if tenant_preference:
             stmt = stmt.where(Rental.tenant_preference == tenant_preference)
+        stmt = stmt.order_by(Rental.message_date.desc())
         stmt = stmt.offset(offset).limit(limit)
         result = await self.db.execute(stmt)
         return result.scalars().all()
