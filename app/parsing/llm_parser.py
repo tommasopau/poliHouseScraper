@@ -53,7 +53,9 @@ Estrai questi campi (usa null se non trovato). Se ci sono delle alternative, sce
     "num_bedrooms": numero_camere_da_letto,
     "num_bathrooms": numero_bagni,
     "flatmates_count": numero_coinquilini_attuali,
-    "summary": "breve sunto delle caratteristiche aggiuntive della casa (es: arredamento, servizi, trasporti, spese incluse, condizioni speciali, etc.)"
+    "summary": "breve sunto delle caratteristiche aggiuntive della casa (es: arredamento, servizi, trasporti, spese incluse, condizioni speciali, etc.)",
+    "has_extra_expenses": "true se ci sono spese extra oltre al prezzo principale, altrimenti false",
+    "extra_expenses_details": "descrizione delle spese extra se presenti, altrimenti null"
 }}
 
 Per il campo location, estrai la via se è esplicitamente presente nel testo. Se non c'è una via, usa la zona (Leonardo, Città Studi, Bovisa) se viene menzionata. Se non trovi né via né zona, imposta a null.

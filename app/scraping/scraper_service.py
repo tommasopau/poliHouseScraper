@@ -170,6 +170,8 @@ class ScrapingService:
             raw_text=parsed.get("raw_text", ""),
             summary=parsed.get("summary"),
             price=parsed.get("price"),
+            has_extra_expenses=parsed.get("has_extra_expenses"),
+            extra_expenses_details=parsed.get("extra_expenses_details"),
             location=parsed.get("location"),
             property_type=parsed.get("property_type"),
             telephone=parsed.get("telephone"),

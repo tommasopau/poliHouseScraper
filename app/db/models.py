@@ -49,6 +49,10 @@ class Rental(SQLModel, table=True):
 
     # Core rental attributes (indexed for filtering)
     price: Optional[float] = Field(default=None, index=True)
+    has_extra_expenses: Optional[bool] = Field(
+        default=None, description="True if extra expenses are mentioned")
+    extra_expenses_details: Optional[str] = Field(
+        default=None, description="Details of extra expenses, if any")
     location: Optional[str] = Field(default=None, index=True)
     property_type: Optional[PropertyType] = Field(default=None, index=True)
 
@@ -90,6 +94,8 @@ class RentalResponse(SQLModel):
     raw_text: str
     summary: Optional[str] = None
     price: Optional[float] = None
+    has_extra_expenses: Optional[bool] = None
+    extra_expenses_details: Optional[str] = None
     location: Optional[str] = None
     property_type: Optional[PropertyType]
     availability_start: Optional[date] = None
@@ -98,17 +104,3 @@ class RentalResponse(SQLModel):
     num_bedrooms: Optional[int] = None
     num_bathrooms: Optional[int] = None
     flatmates_count: Optional[int] = None
-
-
-class RentalSearchRequest(SQLModel):
-    """
-    Request model for rental search with filters and vector search.
-    """
-    query: Optional[str] = None  # For vector similarity search
-    location: Optional[str] = None
-    min_price: Optional[float] = None
-    max_price: Optional[float] = None
-    property_type: Optional[PropertyType] = None
-    tenant_preference: Optional[TenantPreference] = None
-    limit: int = Field(default=20, le=100)
-    offset: int = Field(default=0, ge=0)

@@ -43,6 +43,8 @@ async def search_rentals(
             telephone=rental.telephone,
             email=rental.email,
             price=rental.price,
+            has_extra_expenses=rental.has_extra_expenses,
+            extra_expenses_details=rental.extra_expenses_details,
             location=rental.location,
             property_type=rental.property_type,
             tenant_preference=rental.tenant_preference,
