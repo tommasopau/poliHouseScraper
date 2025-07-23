@@ -4,12 +4,14 @@ Health check endpoint.
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
+from app.middleware.rate_limiter import limiter
 
 
 router = APIRouter(tags=["health"])
 
 
 @router.get("/healthcheck")
+@limiter.limit("10/minute")
 async def healthcheck():
     """
     Basic health check endpoint.

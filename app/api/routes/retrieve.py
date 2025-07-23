@@ -3,11 +3,14 @@ from fastapi import APIRouter, Depends, Query
 from app.db.models import Rental, RentalResponse, RentalSearchRequest, PropertyType, TenantPreference
 from app.dependencies.repo import get_rental_repository
 from app.db.repositories.rental import RentalRepository
+from app.middleware.rate_limiter import limiter
+
 
 router = APIRouter(prefix="/rentals", tags=["rentals"])
 
 
 @router.get("/", response_model=List[RentalResponse])
+@limiter.limit("100/minute")
 async def search_rentals(
     location: Optional[str] = Query(None),
     min_price: Optional[float] = Query(None),

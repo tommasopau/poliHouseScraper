@@ -11,6 +11,8 @@ from app.api.routes.health_check import router as health_router  # Fixed import
 from app.scheduler.scheduler import start_scheduler, stop_scheduler  # Fixed import
 from app.db.manage_db import init_db, engine
 from app.core.logger import setup_logging
+from app.middleware.rate_limiter import setup_rate_limiter, limiter
+from app.middleware.secure_headers import SecureHeadersMiddleware
 
 
 @asynccontextmanager
@@ -39,6 +41,9 @@ def create_app() -> FastAPI:
         lifespan=lifespan
     )
 
+    # Secure headers middleware
+    app.add_middleware(SecureHeadersMiddleware)
+
     app.add_middleware(
         TrustedHostMiddleware,
         allowed_hosts=["*"]
@@ -51,6 +56,9 @@ def create_app() -> FastAPI:
         allow_methods=["GET", "POST"],
         allow_headers=["Authorization", "Content-Type"],
     )
+
+    # Rate limiter
+    setup_rate_limiter(app)
 
     # Include routers - Fixed
     app.include_router(health_router, prefix="/api")
