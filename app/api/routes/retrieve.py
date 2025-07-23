@@ -1,6 +1,6 @@
 from typing import List, Optional
 from fastapi import APIRouter, Depends, Query, Request
-from app.db.models import Rental, RentalResponse, RentalSearchRequest, PropertyType, TenantPreference
+from app.db.models import Rental, RentalResponse, PropertyType, TenantPreference
 from app.dependencies.repo import get_rental_repository
 from app.db.repositories.rental import RentalRepository
 from app.middleware.rate_limiter import limiter
