@@ -1,16 +1,13 @@
 import asyncio
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from app.scheduler.scheduler import configure_jobs
+from app.scheduler.scheduler import start_scheduler
 from app.core.logger import setup_logging
 
 setup_logging()
 
 
 async def main():
-    scheduler = AsyncIOScheduler()
-    configure_jobs(scheduler)
-    scheduler.start()
-
+    start_scheduler()
     await asyncio.Event().wait()
 
 if __name__ == "__main__":
