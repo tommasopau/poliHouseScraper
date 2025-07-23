@@ -184,11 +184,12 @@ class ScrapingService:
         )
 
     async def _check_duplicate(self, rental: Rental) -> bool:
-        """Check if rental already exists in database."""
-        if rental.telegram_message_id:
-            # Add method to repository to check by telegram_message_id
-            existing = await self.rental_repository.find_by_telegram_id(
-                rental.telegram_message_id
+        """
+        Check if rental already exists in database by sender_id and a substring of raw_text.
+        """
+        if rental.sender_id and rental.raw_text:
+            existing = await self.rental_repository.find_duplicate_by_substring(
+                rental.sender_id, rental.raw_text, length=10
             )
             return existing is not None
         return False

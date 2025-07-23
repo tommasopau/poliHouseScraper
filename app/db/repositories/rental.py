@@ -2,6 +2,7 @@
 from typing import List, Optional
 from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import func
 
 from app.db.models import Rental, TenantPreference, PropertyType
 from app.db.repositories.base import SQLAlchemyRepository
@@ -39,6 +40,40 @@ class RentalRepository(SQLAlchemyRepository[Rental]):
         """Find rental by Telegram message ID to check for duplicates."""
         stmt = select(Rental).where(
             Rental.telegram_message_id == telegram_message_id)
+        result = await self.db.execute(stmt)
+        return result.scalars().first()
+
+    async def find_duplicate(
+        self, sender_id: int, raw_text: str
+    ) -> Optional[Rental]:
+        """
+        Find a rental with the same sender_id and raw_text (case-insensitive).
+        """
+        stmt = (
+            select(Rental)
+            .where(
+                Rental.sender_id == sender_id,
+                func.lower(Rental.raw_text) == func.lower(raw_text)
+            )
+        )
+        result = await self.db.execute(stmt)
+        return result.scalars().first()
+
+    async def find_duplicate_by_substring(
+        self, sender_id: int, raw_text: str, length: int = 10
+    ) -> Optional[Rental]:
+        """
+        Find a rental with the same sender_id and the same first `length` chars of raw_text.
+        """
+        substring = raw_text[:length].lower()
+        stmt = (
+            select(Rental)
+            .where(
+                Rental.sender_id == sender_id,
+                func.lower(func.substr(
+                    Rental.raw_text, 1, length)) == substring
+            )
+        )
         result = await self.db.execute(stmt)
         return result.scalars().first()
 
