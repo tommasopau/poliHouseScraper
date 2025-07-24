@@ -85,9 +85,9 @@ class RentalResponse(SQLModel):
     Response model for rental API endpoints.
     """
     id: UUID
-    telegram_message_id: int
-    sender_id: int
-    sender_username: str
+    telegram_message_id: Optional[int] = None
+    sender_id: Optional[int] = None
+    sender_username: Optional[str] = None
     message_date: Optional[datetime]
     telephone: Optional[str] = None
     email: Optional[str] = None
@@ -99,8 +99,4 @@ class RentalResponse(SQLModel):
     location: Optional[str] = None
     property_type: Optional[PropertyType]
     availability_start: Optional[date] = None
-    availability_end: Optional[date] = None
-    tenant_preference: Optional[TenantPreference]
-    num_bedrooms: Optional[int] = None
-    num_bathrooms: Optional[int] = None
-    flatmates_count: Optional[int] = None
+    availability_end: Optional[date]
