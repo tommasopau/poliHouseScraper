@@ -191,7 +191,7 @@ class ScrapingService:
         """
         if rental.sender_id and rental.raw_text:
             existing = await self.rental_repository.find_duplicate_by_substring(
-                rental.sender_id, rental.raw_text, length=10
+                rental.sender_id, rental.raw_text, length=30
             )
             return existing is not None
         return False
