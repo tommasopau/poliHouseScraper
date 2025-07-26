@@ -60,7 +60,7 @@ class RentalRepository(SQLAlchemyRepository[Rental]):
         return result.scalars().first()
 
     async def find_duplicate_by_substring(
-        self, sender_id: int, raw_text: str, length: int = 10
+        self, sender_id: int, raw_text: str, length: int = 30
     ) -> Optional[Rental]:
         """
         Find a rental with the same sender_id and the same first `length` chars of raw_text.

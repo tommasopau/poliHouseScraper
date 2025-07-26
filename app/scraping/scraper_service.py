@@ -111,7 +111,7 @@ class ScrapingService:
             try:
                 # Add delay to respect rate limits
                 if i > 0:
-                    await asyncio.sleep(1.5)  # 2 seconds between calls
+                    await asyncio.sleep(1.5)
 
                 parsed = await self.llm_parser.parse_message(message)
                 parsed_data.append(parsed)
