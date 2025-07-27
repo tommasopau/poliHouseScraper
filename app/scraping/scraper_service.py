@@ -9,6 +9,7 @@ from app.telegram.client import TelegramClientWrapper
 from app.parsing.llm_parser import SimpleMistralParser
 from app.db.repositories.rental import RentalRepository
 from app.db.models import Rental, TelegramMessageData, PropertyType, TenantPreference
+from app.utility.helpers import normalize_tenant_preference, parse_date
 import asyncio
 
 logger = logging.getLogger(__name__)
@@ -160,8 +161,7 @@ class ScrapingService:
         if message_date and hasattr(message_date, "tzinfo") and message_date.tzinfo is not None:
             message_date = message_date.replace(tzinfo=None)
 
-        tenant_pref = self.normalize_tenant_preference(
-            parsed.get("tenant_preference"))
+        tenant_pref = normalize_tenant_preference(parsed.get("tenant_preference"))
 
         return Rental(
             telegram_message_id=parsed.get(
@@ -185,8 +185,8 @@ class ScrapingService:
             num_bathrooms=parsed.get("num_bathrooms"),
             flatmates_count=parsed.get("flatmates_count"),
             # Convert date strings to date objects if needed
-            availability_start=self._parse_date(parsed.get("available_start")),
-            availability_end=self._parse_date(parsed.get("available_end")),
+            availability_start=parse_date(parsed.get("available_start")),
+            availability_end=parse_date(parsed.get("available_end")),
             duration_to_leonardo_transit=parsed.get(
                 "duration_to_leonardo_transit"),
             duration_to_bovisa_transit=parsed.get(
@@ -208,33 +208,3 @@ class ScrapingService:
             )
             return existing is not None
         return False
-
-    def _parse_date(self, date_str: str) -> Optional[date]:
-        """
-        Parse a date string in 'YY-MM-DD' or 'YYYY-MM-DD' format to a date object.
-        """
-        if not date_str:
-            return None
-        for fmt in ("%y-%m-%d", "%Y-%m-%d"):
-            try:
-                return datetime.strptime(date_str, fmt).date()
-            except ValueError:
-                continue
-        return None
-
-    def normalize_tenant_preference(self, value: str) -> str:
-        """
-        Normalizza il campo tenant_preference.
-        Restituisce solo 'ragazzo', 'ragazza' o 'indifferente'.
-        Se il valore non è chiaro o contiene più opzioni, restituisce 'indifferente'.
-        """
-        if not value or not isinstance(value, str):
-            return "indifferente"
-        value = value.lower().replace("/", ",").replace("|", ",")
-        valid = {"ragazzo", "ragazza", "indifferente"}
-        # Cerca il primo valore valido
-        for part in value.split(","):
-            part = part.strip()
-            if part in valid:
-                return part
-        return "indifferente"

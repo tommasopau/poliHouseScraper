@@ -27,6 +27,8 @@ async def get_duration_matrix_async(
         "mode": mode,
         "key": API_KEY,
     }
+    if mode == "transit":
+        params["transit_mode"] = "bus|train|tram|subway"
     async with httpx.AsyncClient() as client:
         resp = await client.get(BASE_URL, params=params)
         resp.raise_for_status()

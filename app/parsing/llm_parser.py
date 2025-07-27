@@ -11,6 +11,7 @@ from mistralai import Mistral
 
 from app.core.config import settings
 from app.db.models import TelegramMessageData
+from app.utility.helpers import parse_llm_response
 
 
 class SimpleMistralParser:
@@ -90,8 +91,7 @@ JSON:
 
             # Parse response
             response_content = chat_response.choices[0].message.content
-            # parsing may be not needed if response is already JSON
-            data = self._parse_response(response_content)
+            data = parse_llm_response(response_content)
 
             # Add metadata
             data["message_id"] = message.id
@@ -108,23 +108,6 @@ JSON:
                 "raw_text": message.text,
                 "error": str(e)
             }
-
-    def _parse_response(self, response: str) -> Dict[str, Any]:
-        """Parse LLM response to JSON."""
-        try:
-            # Clean response
-            cleaned = response.strip()
-            if "```" in cleaned:
-                # Extract JSON from markdown
-                start = cleaned.find("{")
-                end = cleaned.rfind("}") + 1
-                cleaned = cleaned[start:end]
-
-            return json.loads(cleaned)
-
-        except json.JSONDecodeError:
-            # Return empty dict if parsing fails
-            return {}
 
     async def batch_parse(self, messages: list[str], delay: float = 2.0) -> list[Dict[str, Any]]:
         """

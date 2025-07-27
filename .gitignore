@@ -35,3 +35,4 @@ emebeddings.py
 alembic/__pycache__
 routes.py
 routes_free.py
+manual.py
