@@ -4,11 +4,11 @@ Main scraping service that orchestrates the entire scraping pipeline.
 import logging
 from typing import List, Optional
 from datetime import datetime, timedelta, date
-
+from app.utility.distances import add_durations
 from app.telegram.client import TelegramClientWrapper
 from app.parsing.llm_parser import SimpleMistralParser
 from app.db.repositories.rental import RentalRepository
-from app.db.models import Rental, TelegramMessageData
+from app.db.models import Rental, TelegramMessageData, PropertyType, TenantPreference
 import asyncio
 
 logger = logging.getLogger(__name__)
@@ -61,6 +61,8 @@ class ScrapingService:
             logger.info(f"Parsing {len(messages)} messages...")
             parsed_data = await self._parse_messages(messages)
             results["messages_parsed"] = len(parsed_data)
+
+            await add_durations(parsed_data, batch_size=20)
 
             # Step 3: Save to database
             logger.info("Saving to database...")
@@ -173,16 +175,27 @@ class ScrapingService:
             has_extra_expenses=parsed.get("has_extra_expenses"),
             extra_expenses_details=parsed.get("extra_expenses_details"),
             location=parsed.get("location"),
-            property_type=parsed.get("property_type"),
+            property_type=PropertyType(parsed.get("property_type")) if parsed.get(
+                "property_type") else None,
             telephone=parsed.get("telephone"),
             email=parsed.get("email"),
-            tenant_preference=tenant_pref,
+            tenant_preference=TenantPreference(
+                tenant_pref) if tenant_pref else None,
             num_bedrooms=parsed.get("num_bedrooms"),
             num_bathrooms=parsed.get("num_bathrooms"),
             flatmates_count=parsed.get("flatmates_count"),
             # Convert date strings to date objects if needed
             availability_start=self._parse_date(parsed.get("available_start")),
-            availability_end=self._parse_date(parsed.get("available_end"))
+            availability_end=self._parse_date(parsed.get("available_end")),
+            duration_to_leonardo_transit=parsed.get(
+                "duration_to_leonardo_transit"),
+            duration_to_bovisa_transit=parsed.get(
+                "duration_to_bovisa_transit"),
+            duration_to_leonardo_walking=parsed.get(
+                "duration_to_leonardo_walking"),
+            duration_to_bovisa_walking=parsed.get("duration_to_bovisa_walking")
+
+
         )
 
     async def _check_duplicate(self, rental: Rental) -> bool:

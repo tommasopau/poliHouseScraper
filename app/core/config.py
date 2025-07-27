@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     # LLM Configuration
     MISTRAL_API_KEY: str
 
+    DISTANCE_MATRIX_API_KEY: str
+    DISTANCE_URL: str = "https://api.distancematrix.ai/maps/api/distancematrix/json"
     # Scheduler
     SCRAPE_INTERVAL_MINUTES: int = 60
     SCRAPE_SINCE_DELTA: timedelta = timedelta(minutes=60)

@@ -5,9 +5,8 @@ from datetime import datetime, date
 from typing import Optional, Dict, Any
 from uuid import UUID, uuid4
 from enum import Enum
-
 from sqlmodel import SQLModel, Field, BigInteger
-
+from pydantic import ConfigDict
 from app.core.config import settings
 
 
@@ -24,7 +23,14 @@ class TenantPreference(str, Enum):
     indifferente = "indifferente"
 
 
-class Rental(SQLModel, table=True):
+class StrictSQLModel(SQLModel):
+    model_config = ConfigDict(
+        extra="forbid",
+        validate_assignment=True,
+    )
+
+
+class Rental(StrictSQLModel, table=True):
     """
     Rental property model - Pure SQLModel approach.
     """
@@ -67,8 +73,17 @@ class Rental(SQLModel, table=True):
     num_bathrooms: Optional[int] = Field(default=None, index=True)
     flatmates_count: Optional[int] = Field(default=None, index=True)
 
+    duration_to_leonardo_transit: Optional[float] = Field(
+        default=None, index=True)
+    duration_to_bovisa_transit: Optional[float] = Field(
+        default=None, index=True)
+    duration_to_leonardo_walking: Optional[float] = Field(
+        default=None, index=True)
+    duration_to_bovisa_walking: Optional[float] = Field(
+        default=None, index=True)
 
-class TelegramMessageData(SQLModel):
+
+class TelegramMessageData(StrictSQLModel):
     """
     Pydantic model for Telegram message data from client.
     """
@@ -80,7 +95,7 @@ class TelegramMessageData(SQLModel):
     has_media: bool = False
 
 
-class RentalResponse(SQLModel):
+class RentalResponse(StrictSQLModel):
     """
     Response model for rental API endpoints.
     """
@@ -97,6 +112,14 @@ class RentalResponse(SQLModel):
     has_extra_expenses: Optional[bool] = None
     extra_expenses_details: Optional[str] = None
     location: Optional[str] = None
-    property_type: Optional[PropertyType]
+    property_type: Optional[PropertyType] = None
+    tenant_preference: Optional[TenantPreference] = None
     availability_start: Optional[date] = None
-    availability_end: Optional[date]
+    availability_end: Optional[date] = None
+    num_bedrooms: Optional[int] = None
+    num_bathrooms: Optional[int] = None
+    flatmates_count: Optional[int] = None
+    duration_to_leonardo_transit: Optional[float] = None
+    duration_to_bovisa_transit: Optional[float] = None
+    duration_to_leonardo_walking: Optional[float] = None
+    duration_to_bovisa_walking: Optional[float] = None

@@ -53,6 +53,10 @@ async def search_rentals(
             num_bedrooms=rental.num_bedrooms,
             num_bathrooms=rental.num_bathrooms,
             flatmates_count=rental.flatmates_count,
+            duration_to_bovisa_transit=rental.duration_to_bovisa_transit,
+            duration_to_leonardo_transit=rental.duration_to_leonardo_transit,
+            duration_to_bovisa_walking=rental.duration_to_bovisa_walking,
+            duration_to_leonardo_walking=rental.duration_to_leonardo_walking,
         )
         for rental in rentals
     ]
